@@ -16,7 +16,7 @@ public class Player extends BitmapCharacter implements Collidable, Movable, Game
     private final int ROW_LEFT_TO_RIGHT = 1;
     private final Bitmap[] leftToRight;
 
-    private final Rect hitbox;
+    private final Rect hitBox;
 
     private final boolean canMove;
     private int colUsing;
@@ -34,7 +34,7 @@ public class Player extends BitmapCharacter implements Collidable, Movable, Game
             this.leftToRight[col] = this.createSubImageAt(ROW_LEFT_TO_RIGHT, col);
         }
 
-        this.hitbox = new Rect(xPos, yPos, xPos + this.SPRITE_WIDTH, yPos + this.SPRITE_HEIGHT);
+        this.hitBox = new Rect(xPos, yPos, xPos + this.SPRITE_WIDTH, yPos + this.SPRITE_HEIGHT);
 
         this.canMove = false;
         this.colUsing = 0;
@@ -70,12 +70,12 @@ public class Player extends BitmapCharacter implements Collidable, Movable, Game
         this.lastDrawnNanoTime = System.nanoTime();
     }
 
-    public Rect getHitbox() { return hitbox;}
+    public Rect gethitBox() { return hitBox;}
 
 
     @Override
-    public boolean detectCollision(Rect dangerHitBox) {
-        return false;
+    public boolean detectCollision(Rect dangerhitBox) {
+        return (dangerhitBox != null) && hitBox.intersect(dangerhitBox);
     }
 
     @Override
