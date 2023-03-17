@@ -4,7 +4,6 @@ import static androidx.constraintlayout.widget.StateSet.TAG;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -30,6 +29,15 @@ public class MainMenuActivity extends AppCompatActivity {
     public static final int RECORD_AUDIO = 0;
     public Long scoreMax;
     private TextView scoreView;
+
+    private ListView listControl;
+
+    String[] controlList = {"Passez au travers du maximum d'obstacle invisible !",
+            "Cachez le capteur de luminosité les rends visibles pour un laps de temps",
+            "Mais attention vous devez passez au moins trois obstacles pour voir les prochains !",
+            "Controlez la monté et descente de votre avatar à l'aide du toucher",
+            "Controlez aussi le mouvement horizontal en penchant la tablette dans le bon sens",
+            "Bonne chance à vous :)"};
 
 
     public void startGameActivity(View view) {
@@ -57,19 +65,17 @@ public class MainMenuActivity extends AppCompatActivity {
             startActivity(getPermission);
         }
 
-        /*
+
         loadScore();
         // Setting score value using shared preference
-        scoreView = findViewById(R.id.Score);
+        scoreView = findViewById(R.id.highScore);
         scoreView.setText("Meilleur score : " + scoreMax);
 
 
-
         listControl = (ListView) findViewById(R.id.listControl);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.listcontrolview, R.id.textView, controlList);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.listcontrolview, R.id.ligneControl, controlList);
         listControl.setAdapter(arrayAdapter);
 
-         */
 
     }
 
@@ -77,13 +83,10 @@ public class MainMenuActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        /*
         loadScore();
         // Setting score value using shared preference
-        scoreView = findViewById(R.id.Score);
+        scoreView = findViewById(R.id.highScore);
         scoreView.setText("Meilleur score : " + scoreMax);
-
-         */
     }
 
 

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/ligneControl"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:clickable="true"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:fontFamily="@font/roboto_regular"
+        android:minHeight="48dp"
+        android:padding="@dimen/cardview_default_radius"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        tools:ignore="SpeakableTextPresentCheck" />
+</LinearLayout>
