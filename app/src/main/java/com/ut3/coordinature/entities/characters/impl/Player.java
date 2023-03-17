@@ -6,10 +6,11 @@ import android.graphics.Rect;
 
 import com.ut3.coordinature.R;
 import com.ut3.coordinature.entities.Collidable;
+import com.ut3.coordinature.entities.GameObject;
 import com.ut3.coordinature.entities.Movable;
 import com.ut3.coordinature.entities.characters.BitmapCharacter;
 
-public class Player extends BitmapCharacter implements Collidable, Movable {
+public class Player extends BitmapCharacter implements Collidable, Movable, GameObject {
     private static final float VELOCITY = 0.5f;
 
     private final int ROW_LEFT_TO_RIGHT = 1;
@@ -44,7 +45,8 @@ public class Player extends BitmapCharacter implements Collidable, Movable {
         return bitmaps[this.colUsing];
     }
 
-    public void update(){
+    @Override
+    public void updateGameObject(){
         this.colUsing = (this.colUsing + 1) % this.colCount;
 
         //Get current time
@@ -59,8 +61,8 @@ public class Player extends BitmapCharacter implements Collidable, Movable {
         //Distance moves
         float distance = VELOCITY * deltaTime;
     }
-
-    public void draw(Canvas canvas){
+    @Override
+    public void drawGameObject(Canvas canvas){
         Bitmap bitmap = this.getCurrentMoveBitmap();
         canvas.drawBitmap(bitmap, xPos, yPos, null);
 
