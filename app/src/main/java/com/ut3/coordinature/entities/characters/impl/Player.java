@@ -113,7 +113,7 @@ public class Player extends BitmapCharacter implements Collidable, Movable, Game
                 this.hitBox.offset(0, offsetY);
             }
 
-            setCanMove(false);
+            //setCanMove(false);
         }
 
     }
