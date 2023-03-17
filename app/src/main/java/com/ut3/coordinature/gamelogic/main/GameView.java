@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.ut3.coordinature.entities.characters.impl.Player;
+
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final SharedPreferences sharedPreferences;
 
@@ -18,7 +20,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private TextView currentScore;
 
     //Entities
-
+    private Player player;
     //Utilities
 
     public GameView(Context context, SharedPreferences sharedPreferences) {
@@ -69,6 +71,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void update() {
+
     }
 
     @Override

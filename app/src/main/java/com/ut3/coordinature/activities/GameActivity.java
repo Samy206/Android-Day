@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.ut3.coordinature.R;
+import com.ut3.coordinature.gamelogic.main.GameView;
 //import com.ut3.coordinature.entities.character.impl.Player;
 //import com.ut3.coordinature.game.logic.main.GameView;
 
@@ -36,6 +37,8 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     File audioFile = null;
 
     private MediaRecorder mRecorder = null;
+
+    private GameView gameView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,13 +62,10 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
 
     private void initGameView(){
-        /*
         SharedPreferences sharedPreferences = getSharedPreferences(MainMenuActivity.SHARED_PREF, MODE_PRIVATE);
-        gameView = new GameView(this, sharedPreferences, this);
+        gameView = new GameView(this, sharedPreferences);
         gameView.setZOrderOnTop(true);
         gameView.getHolder().setFormat(PixelFormat.TRANSPARENT);
-
-         */
     }
 
 
