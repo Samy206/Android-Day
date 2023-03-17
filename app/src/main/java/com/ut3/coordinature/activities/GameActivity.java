@@ -11,10 +11,12 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ut3.coordinature.R;
 import com.ut3.coordinature.controllers.MainController;
 import com.ut3.coordinature.gamelogic.main.GameView;
 
@@ -49,9 +51,15 @@ public class GameActivity extends AppCompatActivity {
 
         if(actionBar != null){
             actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+            actionBar.setCustomView(R.layout.activity_game_action_bar);
         }
     }
 
+
+    public void startMainMenuActivity() {
+        Intent intent = new Intent(this, MainMenuActivity.class);
+        startActivity(intent);
+    }
 
     private void initGameView(){
         SharedPreferences sharedPreferences = getSharedPreferences(MainMenuActivity.SHARED_PREF, MODE_PRIVATE);

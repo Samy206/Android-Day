@@ -12,7 +12,7 @@ public class Platform implements PlatformInterface, GameObject {
 
     private final Rect hitBox;
     private boolean visible;
-    public final int SPEED = 4;
+    public final int SPEED = 1;
     public int direction = 0;
 
 
@@ -49,7 +49,7 @@ public class Platform implements PlatformInterface, GameObject {
         if(visible)
             paint.setColor(Color.RED);
         else
-            paint.setColor(Color.RED);
+            paint.setColor(Color.TRANSPARENT);
         canvas.drawRect(hitBox, paint);
     }
 
