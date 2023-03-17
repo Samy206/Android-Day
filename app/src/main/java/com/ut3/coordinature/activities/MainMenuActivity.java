@@ -31,12 +31,6 @@ public class MainMenuActivity extends AppCompatActivity {
     public Long scoreMax;
     private TextView scoreView;
 
-    private ListView listControl;
-
-    String[] controlList = {"Appuyez à gauche ou à droite du personnage pour changer de direction",
-            "Swipez (Rester appuyer et relâcher plus loin) pour faire dasher le personnage !",
-            "Vous avez le droit de crier une fois pour tuer tous les ennemis et projectiles !",
-            "Survivez le plus longtemps possible :)"};
 
     public void startGameActivity(View view) {
         Intent intent = new Intent(this, GameActivity.class);
@@ -49,7 +43,7 @@ public class MainMenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         // Setting layout
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_menu);
+        setContentView(R.layout.activity_main);
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             Log.d(TAG, "onResume: persmission granted== requested");

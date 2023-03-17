@@ -54,7 +54,6 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
         if(actionBar != null){
             actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-            actionBar.setCustomView(R.layout.activity_game_action_bar);
         }
     }
 
@@ -163,7 +162,6 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     private RelativeLayout createRootPanel(){
         // Setup your ImageView
         ImageView bgImagePanel = new ImageView(this);
-        bgImagePanel.setBackgroundResource(R.drawable.background);
 
         // Use a RelativeLayout to overlap both SurfaceView and ImageView
         RelativeLayout.LayoutParams fillParentLayout = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
