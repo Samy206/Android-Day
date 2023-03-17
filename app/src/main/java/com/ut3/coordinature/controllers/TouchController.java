@@ -33,18 +33,12 @@ public class TouchController implements View.OnTouchListener{
         Player player = gameView.getPlayer();
         switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_MOVE:
-                Log.d("TAG", "onTouch: touch move");
-                //implement player move here
-           case MotionEvent.ACTION_DOWN:
-                Log.d("TAG", "onTouch: touch down");
+            case MotionEvent.ACTION_DOWN:
                 direction = (int) (y - player.getyPos()) > 0 ? 1 : -1;
                 player.setDirection(direction);
                 player.setCanMove(true);
                 break;
             case MotionEvent.ACTION_UP:
-                Log.d("TAG", "onTouch: touch up");
-                //implement player move here
-
                 break;
 
             default:
