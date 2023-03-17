@@ -9,6 +9,10 @@ import com.ut3.coordinature.entities.Collidable;
 import com.ut3.coordinature.entities.GameObject;
 import com.ut3.coordinature.entities.Movable;
 import com.ut3.coordinature.entities.characters.BitmapCharacter;
+import com.ut3.coordinature.entities.obstacles.impl.Obstacle;
+
+import java.util.ArrayList;
+import java.util.List;
 import com.ut3.coordinature.gamelogic.main.GameView;
 
 public class Player extends BitmapCharacter implements Collidable, Movable, GameObject {
@@ -17,29 +21,29 @@ public class Player extends BitmapCharacter implements Collidable, Movable, Game
     private final int ROW_LEFT_TO_RIGHT = 0;
     private final Bitmap[] leftToRight;
 
-    private final Rect hitbox;
+    private final Rect hitBox;
 
     private final boolean canMove;
-    private int colUsing;
+    private final int colUsing;
 
-    private int obstaclePassed;
+    private final List<Obstacle> obstaclePassed;
 
     private long lastDrawnNanoTime = -1;
 
-    private Matrix movementMatrix;
+    private final Matrix movementMatrix;
 
-    private GameView gameView;
+    private final GameView gameView;
 
     public Player(GameView gameView, Bitmap spriteSheet, int xPos, int yPos) {
         super(spriteSheet, 1, 2, xPos, yPos);
-
+        this.obstaclePassed = new ArrayList<>();
         this.leftToRight = new Bitmap[colCount];
 
         for(int col = 0; col < getColCount(); col++){
             this.leftToRight[col] = this.createSubImageAt(ROW_LEFT_TO_RIGHT, col);
         }
 
-        this.hitbox = new Rect(xPos, yPos, xPos + this.SPRITE_WIDTH, yPos + this.SPRITE_HEIGHT);
+        this.hitBox = new Rect(xPos, yPos, xPos + this.SPRITE_WIDTH, yPos + this.SPRITE_HEIGHT);
 
         this.canMove = false;
         this.colUsing = 0;
@@ -88,12 +92,12 @@ public class Player extends BitmapCharacter implements Collidable, Movable, Game
         this.lastDrawnNanoTime = System.nanoTime();
     }
 
-    public Rect getHitbox() { return hitbox;}
+    public Rect gethitBox() { return hitBox;}
 
 
     @Override
-    public boolean detectCollision(Rect dangerHitBox) {
-        return false;
+    public boolean detectCollision(Rect dangerhitBox) {
+        return (dangerhitBox != null) && hitBox.intersect(dangerhitBox);
     }
 
     @Override
@@ -101,11 +105,18 @@ public class Player extends BitmapCharacter implements Collidable, Movable, Game
 
     }
 
-    public int getObstaclePassed() {
+    public List<Obstacle> getObstaclePassed() {
         return obstaclePassed;
     }
 
-    public void setObstaclePassed(int obstaclePassed) {
-        this.obstaclePassed = obstaclePassed;
+    public boolean obstaclePassedCheck(Obstacle obstacle) {
+        if(obstaclePassed.contains(obstacle))
+            return false;
+
+        if(detectCollision(obstacle.getPlatformsGap())) {
+            obstaclePassed.add(obstacle);
+            return true;
+        }
+        return false;
     }
 }

@@ -4,7 +4,6 @@ package com.ut3.coordinature.activities;
 import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -12,23 +11,14 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.MediaRecorder;
 import android.os.Bundle;
-import android.os.Environment;
-import android.util.Log;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
-import com.ut3.coordinature.R;
 import com.ut3.coordinature.controllers.MainController;
 import com.ut3.coordinature.gamelogic.main.GameView;
-//import com.ut3.coordinature.entities.character.impl.Player;
-//import com.ut3.coordinature.game.logic.main.GameView;
 
 import java.io.File;
-import java.io.IOException;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -37,7 +27,7 @@ public class GameActivity extends AppCompatActivity {
 
     File audioFile = null;
 
-    private MediaRecorder mRecorder = null;
+    private final MediaRecorder mRecorder = null;
 
     private MainController controller;
 
@@ -64,10 +54,8 @@ public class GameActivity extends AppCompatActivity {
 
 
     private void initGameView(){
-        //SharedPreferences sharedPreferences = getSharedPreferences(MainMenuActivity.SHARED_PREF, MODE_PRIVATE);
-        SharedPreferences sharedPreferences = null;
+        SharedPreferences sharedPreferences = getSharedPreferences(MainMenuActivity.SHARED_PREF, MODE_PRIVATE);
         gameView = new GameView(this, sharedPreferences);
-        //gameView.setZOrderOnTop(true);
         gameView.getHolder().setFormat(PixelFormat.TRANSPARENT);
     }
 
