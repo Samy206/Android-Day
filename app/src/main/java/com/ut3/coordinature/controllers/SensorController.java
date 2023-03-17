@@ -29,7 +29,7 @@ public class SensorController implements SensorEventListener{
     }
 
     public void registerListener(){
-        Sensor acceloSensor = sm.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION
+        Sensor acceloSensor = sm.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD
         );
         Sensor luxSensor = sm.getDefaultSensor(Sensor.TYPE_LIGHT);
 
@@ -53,8 +53,13 @@ public class SensorController implements SensorEventListener{
         int sensor = sensorEvent.sensor.getType();
         float[] values = sensorEvent.values;
         synchronized (this) {
-            if (sensor == Sensor.TYPE_LINEAR_ACCELERATION) {
-                //implement obstacles mouvement here
+            if (sensor == Sensor.TYPE_MAGNETIC_FIELD) {
+                double sensitivity = 0.1;
+                    if (values[1] > sensitivity) {
+                        this.gameView.setCanMoveObstacles(true, 1);
+                    } else if (values[0] < -sensitivity) {
+                        this.gameView.setCanMoveObstacles(true, -1);
+                    }
             }
 
             if (sensor == Sensor.TYPE_LIGHT) {

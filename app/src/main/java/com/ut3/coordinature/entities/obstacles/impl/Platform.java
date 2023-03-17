@@ -13,6 +13,7 @@ public class Platform implements PlatformInterface, GameObject {
     private final Rect hitBox;
     private boolean visible;
     public final int SPEED = 4;
+    public int direction = 0;
 
 
     public Platform(Rect source) {
@@ -64,7 +65,12 @@ public class Platform implements PlatformInterface, GameObject {
 
     @Override
     public void move() {
-        this.hitBox.offset(-SPEED, 0);
+        this.hitBox.offset(direction * SPEED, 0);
+    }
+
+    @Override
+    public void setDirection(int direction){
+        this.direction = direction;
     }
 
 
