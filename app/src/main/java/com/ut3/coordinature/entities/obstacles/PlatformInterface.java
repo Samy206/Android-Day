@@ -17,4 +17,5 @@ public interface PlatformInterface extends Movable, Collidable, GameObject {
 
     int getSPEED();
 
+    void setDirection(int direction);
 }

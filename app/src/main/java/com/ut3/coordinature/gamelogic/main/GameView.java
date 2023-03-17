@@ -170,4 +170,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
 
     }
+
+    public void setCanMoveObstacles(boolean b, int direction){
+        if(obstacles != null){
+            for(Obstacle obstacle : obstacles){
+                obstacle.setCanMove(b);
+                obstacle.setDirection(direction);
+            }
+        }
+    }
 }
