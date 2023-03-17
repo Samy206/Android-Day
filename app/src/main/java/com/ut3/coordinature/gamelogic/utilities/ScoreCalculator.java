@@ -8,19 +8,18 @@ import com.ut3.coordinature.entities.characters.impl.Player;
 public class ScoreCalculator {
 
     private final SharedPreferences sharedPreferences;
-    private Player player;
 
-    public ScoreCalculator(SharedPreferences sharedPreferences, Player player) {
+    public ScoreCalculator(SharedPreferences sharedPreferences) {
         this.sharedPreferences = sharedPreferences;
-        this.player = player;
     }
 
-    public long calculateScore(Long startTime){
-        return ( player.getObstaclePassed() / 3);
+    public long calculateScore(int obstaclePassed){
+        return ( obstaclePassed / 3);
     }
 
-    public void updateScore(Long startTime) {
-        long score = calculateScore(startTime);
+    public void updateScore(int obstaclePassed) {
+
+        long score = calculateScore(obstaclePassed);
         long previousMaxScore = sharedPreferences.getLong(MainMenuActivity.SHARED_PREF, 0);
 
         if(score > previousMaxScore) {

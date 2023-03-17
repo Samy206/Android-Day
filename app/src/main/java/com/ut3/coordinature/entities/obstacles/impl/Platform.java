@@ -36,6 +36,11 @@ public class Platform implements PlatformInterface, GameObject {
     }
 
     @Override
+    public Rect getHitBox() {
+        return hitBox;
+    }
+
+    @Override
     public void drawGameObject(Canvas canvas) {
         Paint paint = new Paint();
         if(visible)
@@ -59,5 +64,6 @@ public class Platform implements PlatformInterface, GameObject {
     public void move() {
         this.hitBox.offset(SPEED, 0);
     }
+
 
 }

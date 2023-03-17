@@ -9,6 +9,10 @@ import com.ut3.coordinature.entities.Collidable;
 import com.ut3.coordinature.entities.GameObject;
 import com.ut3.coordinature.entities.Movable;
 import com.ut3.coordinature.entities.characters.BitmapCharacter;
+import com.ut3.coordinature.entities.obstacles.impl.Obstacle;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Player extends BitmapCharacter implements Collidable, Movable, GameObject {
     private static final float VELOCITY = 0.5f;
@@ -21,13 +25,13 @@ public class Player extends BitmapCharacter implements Collidable, Movable, Game
     private final boolean canMove;
     private int colUsing;
 
-    private int obstaclePassed;
+    private List<Obstacle> obstaclePassed;
 
     private long lastDrawnNanoTime = -1;
 
     public Player(Bitmap spriteSheet, int xPos, int yPos) {
         super(spriteSheet, 1, 2, xPos, yPos);
-
+        this.obstaclePassed = new ArrayList<>();
         this.leftToRight = new Bitmap[colCount];
 
         for(int col = 0; col < getColCount(); col++){
@@ -83,11 +87,18 @@ public class Player extends BitmapCharacter implements Collidable, Movable, Game
 
     }
 
-    public int getObstaclePassed() {
+    public List<Obstacle> getObstaclePassed() {
         return obstaclePassed;
     }
 
-    public void setObstaclePassed(int obstaclePassed) {
-        this.obstaclePassed = obstaclePassed;
+    public boolean obstaclePassedCheck(Obstacle obstacle) {
+        if(obstaclePassed.contains(obstacle))
+            return false;
+
+        if(detectCollision(obstacle.getPlatformsGap())) {
+            obstaclePassed.add(obstacle);
+            return true;
+        }
+        return false;
     }
 }
