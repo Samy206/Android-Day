@@ -6,5 +6,6 @@ public interface Collidable {
 
     boolean detectCollision(Rect dangerHitBox);
 
+
 }
 
