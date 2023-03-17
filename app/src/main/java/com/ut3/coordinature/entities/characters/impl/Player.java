@@ -2,45 +2,49 @@ package com.ut3.coordinature.entities.characters.impl;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
-import android.graphics.Paint;
 import android.graphics.Rect;
-import android.util.Log;
 
 import com.ut3.coordinature.entities.Collidable;
 import com.ut3.coordinature.entities.GameObject;
 import com.ut3.coordinature.entities.Movable;
 import com.ut3.coordinature.entities.characters.BitmapCharacter;
+import com.ut3.coordinature.entities.obstacles.impl.Obstacle;
+
+import java.util.ArrayList;
+import java.util.List;
 import com.ut3.coordinature.gamelogic.main.GameView;
 
 public class Player extends BitmapCharacter implements Collidable, Movable, GameObject {
-    private static final float VELOCITY = 2f;
+    private static final float VELOCITY = 0.5f;
+
     private final int ROW_LEFT_TO_RIGHT = 0;
     private final Bitmap[] leftToRight;
 
-    private final Rect hitbox;
+    private final Rect hitBox;
 
     private boolean canMove;
     private int colUsing;
 
-    private int obstaclePassed;
+
+    private final List<Obstacle> obstaclePassed;
 
     private long lastDrawnNanoTime = -1;
 
+    private final Matrix movementMatrix;
     private long lastAnimationTime = -1;
 
     private int PLAYER_SCALE = 3;
 
     private Matrix movementMatrix;
 
-    private GameView gameView;
+    private final GameView gameView;
 
     private int direction = 0;
 
     public Player(GameView gameView, Bitmap spriteSheet, int xPos, int yPos) {
         super(spriteSheet, 1, 2, xPos, yPos);
-
+        this.obstaclePassed = new ArrayList<>();
         this.leftToRight = new Bitmap[colCount];
 
         for(int col = 0; col < getColCount(); col++){
@@ -61,6 +65,7 @@ public class Player extends BitmapCharacter implements Collidable, Movable, Game
         Bitmap[] bitmaps = this.leftToRight;
         return bitmaps[this.colUsing];
     }
+
     private void movementMatrixUpdate(){
         movementMatrix.reset();
         movementMatrix.postScale(PLAYER_SCALE, PLAYER_SCALE);
@@ -114,23 +119,24 @@ public class Player extends BitmapCharacter implements Collidable, Movable, Game
         }
 
     }
-
     @Override
     public void drawGameObject(Canvas canvas){
         Bitmap bitmap = this.getCurrentMoveBitmap();
         movementMatrixUpdate();
         canvas.drawBitmap(bitmap, movementMatrix, null);
 
+        //canvas.drawBitmap(bitmap, xPos, yPos, null);
+
         //Update timer
         this.lastDrawnNanoTime = System.nanoTime();
     }
 
-    public Rect getHitbox() { return hitbox;}
+    public Rect gethitBox() { return hitBox;}
 
 
     @Override
-    public boolean detectCollision(Rect dangerHitBox) {
-        return false;
+    public boolean detectCollision(Rect dangerhitBox) {
+        return (dangerhitBox != null) && hitBox.intersect(dangerhitBox);
     }
 
     @Override
@@ -138,12 +144,19 @@ public class Player extends BitmapCharacter implements Collidable, Movable, Game
 
     }
 
-    public int getObstaclePassed() {
+    public List<Obstacle> getObstaclePassed() {
         return obstaclePassed;
     }
 
-    public void setObstaclePassed(int obstaclePassed) {
-        this.obstaclePassed = obstaclePassed;
+    public boolean obstaclePassedCheck(Obstacle obstacle) {
+        if(obstaclePassed.contains(obstacle))
+            return false;
+
+        if(detectCollision(obstacle.getPlatformsGap())) {
+            obstaclePassed.add(obstacle);
+            return true;
+        }
+        return false;
     }
 
     public void setDirection(int direction) {

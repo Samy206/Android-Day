@@ -12,7 +12,7 @@ public class Platform implements PlatformInterface, GameObject {
 
     private final Rect hitBox;
     private boolean visible;
-    private final int SPEED = 4;
+    public final int SPEED = 4;
 
 
     public Platform(Rect source) {
@@ -31,8 +31,15 @@ public class Platform implements PlatformInterface, GameObject {
     }
 
     @Override
+    public int getSPEED() { return SPEED; }
+    @Override
     public boolean getVisibility() {
         return visible;
+    }
+
+    @Override
+    public Rect getHitBox() {
+        return hitBox;
     }
 
     @Override
@@ -41,7 +48,7 @@ public class Platform implements PlatformInterface, GameObject {
         if(visible)
             paint.setColor(Color.RED);
         else
-            paint.setColor(Color.TRANSPARENT);
+            paint.setColor(Color.RED);
         canvas.drawRect(hitBox, paint);
     }
 
@@ -57,7 +64,8 @@ public class Platform implements PlatformInterface, GameObject {
 
     @Override
     public void move() {
-        this.hitBox.offset(SPEED, 0);
+        this.hitBox.offset(-SPEED, 0);
     }
+
 
 }
