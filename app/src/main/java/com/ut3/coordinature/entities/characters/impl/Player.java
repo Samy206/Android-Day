@@ -20,6 +20,8 @@ public class Player extends BitmapCharacter implements Collidable, Movable {
     private final boolean canMove;
     private int colUsing;
 
+    private int obstaclePassed;
+
     private long lastDrawnNanoTime = -1;
 
     public Player(Bitmap spriteSheet, int xPos, int yPos) {
@@ -77,5 +79,13 @@ public class Player extends BitmapCharacter implements Collidable, Movable {
     @Override
     public void move() {
 
+    }
+
+    public int getObstaclePassed() {
+        return obstaclePassed;
+    }
+
+    public void setObstaclePassed(int obstaclePassed) {
+        this.obstaclePassed = obstaclePassed;
     }
 }
