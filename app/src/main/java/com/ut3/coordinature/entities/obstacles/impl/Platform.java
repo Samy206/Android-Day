@@ -1,11 +1,13 @@
 package com.ut3.coordinature.entities.obstacles.impl;
 
+import android.annotation.SuppressLint;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
 
+import com.ut3.coordinature.R;
 import com.ut3.coordinature.entities.GameObject;
 import com.ut3.coordinature.entities.obstacles.PlatformInterface;
 
@@ -44,11 +46,12 @@ public class Platform implements PlatformInterface, GameObject {
         return hitBox;
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public void drawGameObject(Canvas canvas) {
         Paint paint = new Paint();
         if(visible)
-            paint.setColor(Color.RED);
+            paint.setColor(R.color.purple_700);
         else
             paint.setColor(Color.TRANSPARENT);
         canvas.drawRect(hitBox, paint);
