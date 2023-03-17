@@ -5,37 +5,43 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
+import com.ut3.coordinature.entities.GameObject;
 import com.ut3.coordinature.entities.obstacles.PlatformInterface;
 
-public class Platform implements PlatformInterface {
+public class Platform implements PlatformInterface, GameObject {
 
     private final Rect hitBox;
-    private int color;
+    private boolean visible;
     private final int SPEED = 4;
 
+
     public Platform(Rect source) {
-        this.hitBox = source;
-        color = Color.BLACK;
+        hitBox = source;
+        visible = false;
     }
 
     public Platform(int left, int top, int right, int bottom) {
-        this.hitBox = new Rect(left, top, right, bottom);
-        color = Color.BLACK;
+        hitBox = new Rect(left, top, right, bottom);
+        visible = false;
     }
 
     @Override
-    public void setColor(int color) {
-        this.color = color;
+    public void setVisibility(boolean visibility) {
+        visible = visibility;
     }
 
-    public int getColor() {
-        return color;
+    @Override
+    public boolean getVisibility() {
+        return visible;
     }
 
     @Override
     public void draw (Canvas canvas) {
         Paint paint = new Paint();
-        paint.setColor(color);
+        if(visible)
+            paint.setColor(Color.RED);
+        else
+            paint.setColor(Color.TRANSPARENT);
         canvas.drawRect(hitBox, paint);
     }
 
@@ -45,7 +51,13 @@ public class Platform implements PlatformInterface {
     }
 
     @Override
+    public void update() {
+        move();
+    }
+
+    @Override
     public void move() {
         this.hitBox.offset(SPEED, 0);
     }
+
 }
