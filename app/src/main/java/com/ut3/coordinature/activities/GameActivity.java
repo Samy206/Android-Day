@@ -43,10 +43,9 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         initGameView();
 
-        setContentView(createRootPanel());
+        setContentView(gameView);
 
         setupActionBar();
         sm = (SensorManager) getSystemService(SENSOR_SERVICE);
@@ -62,9 +61,10 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
 
     private void initGameView(){
-        SharedPreferences sharedPreferences = getSharedPreferences(MainMenuActivity.SHARED_PREF, MODE_PRIVATE);
+        //SharedPreferences sharedPreferences = getSharedPreferences(MainMenuActivity.SHARED_PREF, MODE_PRIVATE);
+        SharedPreferences sharedPreferences = null;
         gameView = new GameView(this, sharedPreferences);
-        gameView.setZOrderOnTop(true);
+        //gameView.setZOrderOnTop(true);
         gameView.getHolder().setFormat(PixelFormat.TRANSPARENT);
     }
 
@@ -159,7 +159,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     }
 
-    private RelativeLayout createRootPanel(){
+    /*private RelativeLayout createRootPanel(){
         // Setup your ImageView
         ImageView bgImagePanel = new ImageView(this);
 
@@ -168,11 +168,11 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         RelativeLayout rootPanel = new RelativeLayout(this);
 
         rootPanel.setLayoutParams(fillParentLayout);
-        //rootPanel.addView(gameView, fillParentLayout);
+        rootPanel.addView(gameView, fillParentLayout);
         rootPanel.addView(bgImagePanel, fillParentLayout);
 
         return rootPanel;
-    }
+    }**/
 
     public void returnToMenuActivity() {
         Intent intent = new Intent(this, MainMenuActivity.class);

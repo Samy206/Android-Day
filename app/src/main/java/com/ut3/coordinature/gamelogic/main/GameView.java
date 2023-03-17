@@ -2,6 +2,8 @@ package com.ut3.coordinature.gamelogic.main;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.ut3.coordinature.R;
 import com.ut3.coordinature.entities.characters.impl.Player;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
@@ -26,7 +29,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public GameView(Context context, SharedPreferences sharedPreferences) {
         super(context);
         getHolder().addCallback(this);
-
         this.sharedPreferences = sharedPreferences;
         thread = new GameThread(getHolder(), this);
 
@@ -34,7 +36,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     private void initEntities(){
-        //Init all entitites needed
+        Bitmap playerSheet = BitmapFactory.decodeResource(this.getResources(), R.drawable.bat);
+        int playerHeight =(int) (this.getHeight() * 0.5);
+        player = new Player(this, playerSheet, 0, playerHeight);
     }
 
     private void initUtilities(){
@@ -71,12 +75,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void update() {
-
+        player.updateGameObject();
     }
 
     @Override
     public synchronized void draw(Canvas canvas) {
         super.draw(canvas);
+        if(canvas != null){
+            player.drawGameObject(canvas);
+        }
     }
 
     public void clearGame(){

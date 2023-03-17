@@ -2,18 +2,19 @@ package com.ut3.coordinature.entities.characters.impl;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Rect;
 
-import com.ut3.coordinature.R;
 import com.ut3.coordinature.entities.Collidable;
 import com.ut3.coordinature.entities.GameObject;
 import com.ut3.coordinature.entities.Movable;
 import com.ut3.coordinature.entities.characters.BitmapCharacter;
+import com.ut3.coordinature.gamelogic.main.GameView;
 
 public class Player extends BitmapCharacter implements Collidable, Movable, GameObject {
     private static final float VELOCITY = 0.5f;
 
-    private final int ROW_LEFT_TO_RIGHT = 1;
+    private final int ROW_LEFT_TO_RIGHT = 0;
     private final Bitmap[] leftToRight;
 
     private final Rect hitbox;
@@ -25,7 +26,11 @@ public class Player extends BitmapCharacter implements Collidable, Movable, Game
 
     private long lastDrawnNanoTime = -1;
 
-    public Player(Bitmap spriteSheet, int xPos, int yPos) {
+    private Matrix movementMatrix;
+
+    private GameView gameView;
+
+    public Player(GameView gameView, Bitmap spriteSheet, int xPos, int yPos) {
         super(spriteSheet, 1, 2, xPos, yPos);
 
         this.leftToRight = new Bitmap[colCount];
@@ -38,6 +43,10 @@ public class Player extends BitmapCharacter implements Collidable, Movable, Game
 
         this.canMove = false;
         this.colUsing = 0;
+
+        this.gameView = gameView;
+
+        movementMatrix = new Matrix();
     }
 
     public Bitmap getCurrentMoveBitmap() {
@@ -45,9 +54,15 @@ public class Player extends BitmapCharacter implements Collidable, Movable, Game
         return bitmaps[this.colUsing];
     }
 
+    private void movementMatrixUpdate(){
+        movementMatrix.reset();
+        movementMatrix.postScale(3.0f, 3.0f);
+        movementMatrix.postTranslate(xPos, yPos);
+    }
+
     @Override
     public void updateGameObject(){
-        this.colUsing = (this.colUsing + 1) % this.colCount;
+        //this.colUsing = (this.colUsing + 1) % this.colCount;
 
         //Get current time
         long now = System.nanoTime();
@@ -64,7 +79,10 @@ public class Player extends BitmapCharacter implements Collidable, Movable, Game
     @Override
     public void drawGameObject(Canvas canvas){
         Bitmap bitmap = this.getCurrentMoveBitmap();
-        canvas.drawBitmap(bitmap, xPos, yPos, null);
+        movementMatrixUpdate();
+        canvas.drawBitmap(bitmap, movementMatrix, null);
+
+        //canvas.drawBitmap(bitmap, xPos, yPos, null);
 
         //Update timer
         this.lastDrawnNanoTime = System.nanoTime();
