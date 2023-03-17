@@ -15,6 +15,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ut3.coordinature.R;
 import com.ut3.coordinature.controllers.MainController;
 import com.ut3.coordinature.gamelogic.main.GameView;
 
@@ -49,6 +50,7 @@ public class GameActivity extends AppCompatActivity {
 
         if(actionBar != null){
             actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+            actionBar.setCustomView(R.layout.activity_game_action_bar);
         }
     }
 

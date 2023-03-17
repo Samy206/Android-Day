@@ -12,8 +12,10 @@ import android.view.SurfaceView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 
 import com.ut3.coordinature.R;
+import com.ut3.coordinature.activities.GameActivity;
 import com.ut3.coordinature.entities.characters.impl.Player;
 import com.ut3.coordinature.entities.obstacles.impl.Obstacle;
 import com.ut3.coordinature.entities.obstacles.impl.Platform;
@@ -22,8 +24,6 @@ import com.ut3.coordinature.gamelogic.utilities.ScoreCalculator;
 import java.util.concurrent.ArrayBlockingQueue;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
-
-
     //Entities
     private Player player;
     private ArrayBlockingQueue<Obstacle> obstacles;
@@ -35,9 +35,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final GameThread thread;
     private TextView currentScore;
     private SharedPreferences sharedPreference;
+    GameActivity gameActivity;
 
     public GameView(Context context, SharedPreferences sharedPreferenceScore) {
         super(context);
+        gameActivity = (GameActivity) context;
         getHolder().addCallback(this);
         this.sharedPreference = sharedPreferenceScore;
         thread = new GameThread(getHolder(), this);
@@ -62,6 +64,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private void initUtilities(){
         //Init all utilities needed
         scoreCalculator = new ScoreCalculator(sharedPreference);
+
+        //Init currentScore textView
+        ActionBar actionBar = gameActivity.getSupportActionBar();
+        if(actionBar != null){
+            currentScore = actionBar.getCustomView().findViewById(R.id.currentScore);
+        }
     }
 
     @Override
@@ -94,12 +102,18 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void update() {
-        scoreCalculator.updateScore(player.getObstaclePassed().size());
         player.updateGameObject();
 
         for(Obstacle obstacle : obstacles) {
             obstacle.move();
         }
+
+        //Score update
+        gameActivity.runOnUiThread(()->{
+            String score = "Score actuel :" + scoreCalculator.calculateScore(player.getObstaclePassed().size());
+            currentScore.setText(score);
+        });
+        scoreCalculator.updateScore(player.getObstaclePassed().size());
 
         detectCollisions();
 
