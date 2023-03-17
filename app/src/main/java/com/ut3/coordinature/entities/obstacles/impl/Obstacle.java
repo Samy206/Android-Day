@@ -115,7 +115,7 @@ public class Obstacle implements Movable, Collidable, GameObject {
 
     @Override
     public void move() {
-        if(canMove) {
+        if (canMove) {
             int speed = platforms.get(0).getSPEED();
 
             for (PlatformInterface platform : platforms) {
@@ -123,9 +123,10 @@ public class Obstacle implements Movable, Collidable, GameObject {
             }
             platformsGap.offset(direction * speed, 0);
 
-        if(platformsGap.right < 0) {
-            gameView.deleteObstacle(this);
-            platforms.clear();
+            if (platformsGap.right < 0) {
+                gameView.deleteObstacle(this);
+                platforms.clear();
+            }
         }
     }
 
