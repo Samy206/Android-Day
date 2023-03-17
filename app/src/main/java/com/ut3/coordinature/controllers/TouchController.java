@@ -39,6 +39,7 @@ public class TouchController implements View.OnTouchListener{
                 player.setCanMove(true);
                 break;
             case MotionEvent.ACTION_UP:
+                player.setCanMove(false);
                 break;
 
             default:

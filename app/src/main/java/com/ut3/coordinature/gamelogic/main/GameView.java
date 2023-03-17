@@ -12,8 +12,10 @@ import android.view.SurfaceView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 
 import com.ut3.coordinature.R;
+import com.ut3.coordinature.activities.GameActivity;
 import com.ut3.coordinature.entities.characters.impl.Player;
 import com.ut3.coordinature.entities.obstacles.impl.Obstacle;
 import com.ut3.coordinature.entities.obstacles.impl.Platform;
@@ -23,8 +25,6 @@ import com.ut3.coordinature.utils.ObstacleSpawner;
 import java.util.concurrent.ArrayBlockingQueue;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
-
-
     //Entities
     private Player player;
     private ArrayBlockingQueue<Obstacle> obstacles;
@@ -36,10 +36,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     // Commons
     private final GameThread thread;
     private TextView currentScore;
-    private SharedPreferences sharedPreference;
+    private final SharedPreferences sharedPreference;
+    private final GameActivity gameActivity;
+
 
     public GameView(Context context, SharedPreferences sharedPreferenceScore) {
         super(context);
+        gameActivity = (GameActivity) context;
         getHolder().addCallback(this);
         this.sharedPreference = sharedPreferenceScore;
         thread = new GameThread(getHolder(), this);
@@ -47,19 +50,20 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         setFocusable(true);
     }
 
+
+    public ArrayBlockingQueue<Obstacle> getObstacles() {
+        return obstacles;
+    }
     private void initEntities(){
         //Init all entitites needed
 
         obstacles = new ArrayBlockingQueue<>(10);
 
 
+
         obstacles.add(obstacleSpawner.returnRandomObstacleAt(300));
         obstacles.add(obstacleSpawner.returnRandomObstacleAt(600));
         obstacles.add(obstacleSpawner.returnRandomObstacleAt(900));
-
-
-
-        Log.d("TAG", "initEntities: " + obstacles.size());
 
 
         Bitmap playerSheet = BitmapFactory.decodeResource(this.getResources(), R.drawable.bat);
@@ -70,7 +74,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private void initUtilities(){
         //Init all utilities needed
         scoreCalculator = new ScoreCalculator(sharedPreference);
+
         obstacleSpawner = new ObstacleSpawner(getHeight(), this);
+
+        //Init currentScore textView
+        ActionBar actionBar = gameActivity.getSupportActionBar();
+        if(actionBar != null){
+            currentScore = actionBar.getCustomView().findViewById(R.id.currentScore);
+        }
+
     }
 
     @Override
@@ -104,12 +116,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void update() {
-        scoreCalculator.updateScore(player.getObstaclePassed().size());
         player.updateGameObject();
-
-
-        for(Obstacle obstacle : obstacles) {
-            obstacle.move();
+      
+      
+        if(obstacles != null) {
+            for(Obstacle obstacle : obstacles) {
+                obstacle.updateGameObject();
+            }
         }
 
 
@@ -118,6 +131,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
 
 
+
+
+        
+
+        //Score update
+        gameActivity.runOnUiThread(()->{
+            String score = "Score actuel :" + scoreCalculator.calculateScore(player.getObstaclePassed().size());
+            currentScore.setText(score);
+        });
+        scoreCalculator.updateScore(player.getObstaclePassed().size());
 
 
         detectCollisions();
@@ -139,7 +162,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void clearGame(){
-        //TODO : Put all lists.clear
+        obstacles.clear();
     }
 
     public Player getPlayer() {
@@ -150,11 +173,27 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private void detectCollisions() {
         for(Obstacle obstacle : obstacles) {
             player.obstaclePassedCheck(obstacle);
+            if(obstacle.detectCollision(player.gethitBox())) {
+                thread.setRunning(false);
+                clearGame();
+                gameActivity.startMainMenuActivity();
+            }
         }
     }
 
     public void deleteObstacle(Obstacle obstacle) {
-        if(obstacle != null)
+        if(obstacle != null) {
             obstacles.remove(obstacle);
+        }
+
+    }
+
+    public void setCanMoveObstacles(boolean b, int direction){
+        if(obstacles != null){
+            for(Obstacle obstacle : obstacles){
+                obstacle.setCanMove(b);
+                obstacle.setDirection(direction);
+            }
+        }
     }
 }

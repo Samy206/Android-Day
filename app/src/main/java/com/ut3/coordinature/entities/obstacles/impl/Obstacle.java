@@ -22,10 +22,13 @@ public class Obstacle implements Movable, Collidable, GameObject {
 
 
     //
-    private final Long lastDisplayed;
-    private final Long VISIBILITY_DELAY = 3000000000L;
+    private Long lastDisplayed;
+    private final Long VISIBILITY_DELAY = 1000000000L;
     private final GameView gameView;
 
+
+    private boolean canMove = false;
+    private int direction = 0;
 
 
     public Obstacle(Platform bottomPlatform, Platform topPlatform, int windowHeight, GameView view) {
@@ -79,7 +82,7 @@ public class Obstacle implements Movable, Collidable, GameObject {
     @Override
     public boolean detectCollision(Rect dangerHitBox) {
         if(platforms.size() == 2) {
-            return ( platforms.get(0).detectCollision(dangerHitBox) && platforms.get(1).detectCollision(dangerHitBox));
+            return ( platforms.get(0).detectCollision(dangerHitBox) || platforms.get(1).detectCollision(dangerHitBox));
         }
         else {
             return platforms.get(0).detectCollision(dangerHitBox);
@@ -89,6 +92,7 @@ public class Obstacle implements Movable, Collidable, GameObject {
 
 
     public void displayObstacle() {
+        lastDisplayed = System.nanoTime();
         for(PlatformInterface platformInterface : platforms) {
             platformInterface.setVisibility(true);
         }
@@ -98,16 +102,18 @@ public class Obstacle implements Movable, Collidable, GameObject {
     public void updateGameObject() {
 
         boolean visibleObstacle = platforms.get(0).getVisibility();
-        boolean delayOver = false;
+        boolean delayOver = true;
 
         if(visibleObstacle) {
             Long now = System.nanoTime();
             delayOver = ( (now - lastDisplayed) > VISIBILITY_DELAY);
         }
 
-        for(PlatformInterface platform : platforms) {
-            platform.setVisibility(!delayOver);
-            move();
+        if(!platforms.isEmpty()) {
+            for(PlatformInterface platform : platforms) {
+                platform.setVisibility(!delayOver);
+                move();
+            }
         }
 
     }
@@ -115,17 +121,18 @@ public class Obstacle implements Movable, Collidable, GameObject {
 
     @Override
     public void move() {
+        if (canMove) {
+            int speed = platforms.get(0).getSPEED();
 
-        int speed = platforms.get(0).getSPEED();
+            for (PlatformInterface platform : platforms) {
+                platform.move();
+            }
+            platformsGap.offset(direction * speed, 0);
 
-        for(PlatformInterface platform : platforms) {
-            platform.move();
-        }
-        platformsGap.offset(-speed, 0);
-
-        if(platformsGap.right < 0) {
-            platforms.clear();
-            gameView.deleteObstacle(this);
+            if (platformsGap.right < 0) {
+                gameView.deleteObstacle(this);
+                platforms.clear();
+            }
         }
     }
 
@@ -136,4 +143,18 @@ public class Obstacle implements Movable, Collidable, GameObject {
         }
     }
 
+    public boolean isCanMove() {
+        return canMove;
+    }
+
+    public void setCanMove(boolean canMove) {
+        this.canMove = canMove;
+    }
+
+    public void setDirection(int direction) {
+        this.direction = direction;
+        for(PlatformInterface platform : platforms){
+            platform.setDirection(direction);
+        }
+    }
 }
