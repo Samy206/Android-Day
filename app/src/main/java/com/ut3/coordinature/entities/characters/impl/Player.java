@@ -16,7 +16,7 @@ import java.util.List;
 import com.ut3.coordinature.gamelogic.main.GameView;
 
 public class Player extends BitmapCharacter implements Collidable, Movable, GameObject {
-    private static final float VELOCITY = 0.5f;
+    private static final float VELOCITY = 1f;
 
     private final int ROW_LEFT_TO_RIGHT = 0;
     private final Bitmap[] leftToRight;
@@ -36,8 +36,6 @@ public class Player extends BitmapCharacter implements Collidable, Movable, Game
 
     private int PLAYER_SCALE = 3;
 
-    private Matrix movementMatrix;
-
     private final GameView gameView;
 
     private int direction = 0;
@@ -51,7 +49,7 @@ public class Player extends BitmapCharacter implements Collidable, Movable, Game
             this.leftToRight[col] = this.createSubImageAt(ROW_LEFT_TO_RIGHT, col);
         }
 
-        this.hitbox = new Rect(xPos, yPos, xPos + PLAYER_SCALE * this.SPRITE_WIDTH, yPos + PLAYER_SCALE *this.SPRITE_HEIGHT);
+        this.hitBox = new Rect(xPos, yPos, xPos + PLAYER_SCALE * this.SPRITE_WIDTH, yPos + PLAYER_SCALE *this.SPRITE_HEIGHT);
 
         this.canMove = false;
         this.colUsing = 0;
@@ -103,16 +101,16 @@ public class Player extends BitmapCharacter implements Collidable, Movable, Game
             int offsetY = (int)(direction * distance);
 
             this.yPos += offsetY;
-            int reposition = yPos - this.hitbox.top;
+            int reposition = yPos - this.hitBox.top;
 
             if(yPos <= 0 ){
                 yPos = 0;
-                this.hitbox.offset(0, reposition );
+                this.hitBox.offset(0, reposition );
             }else if(yPos >= this.gameView.getHeight()- SPRITE_HEIGHT * (PLAYER_SCALE)){
                 yPos = this.gameView.getHeight() - SPRITE_HEIGHT * PLAYER_SCALE;
-                this.hitbox.offset(0, reposition);
+                this.hitBox.offset(0, reposition);
             }else{
-                this.hitbox.offset(0, offsetY);
+                this.hitBox.offset(0, offsetY);
             }
 
             setCanMove(false);
