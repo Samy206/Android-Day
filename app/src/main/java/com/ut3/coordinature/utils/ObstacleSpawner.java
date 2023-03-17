@@ -12,8 +12,8 @@ public class ObstacleSpawner {
 
     private int windowHeight;
 
-    private final int platformWidth = 50;
-    private int gabSize = 50;
+    private final int platformWidth = 100;
+    private int gapSize = 200;
     private final GameView gameView;
 
     private final int SPACE_BETWEEN_OBSTACLES = 50;
@@ -25,9 +25,9 @@ public class ObstacleSpawner {
 
 
     public ArrayBlockingQueue<Obstacle> spawnNewObstacle(ArrayBlockingQueue<Obstacle> currentObstacles) {
-        Obstacle first = currentObstacles.poll();
+        //Obstacle first = currentObstacles.poll();
 
-        Obstacle newObstacle = returnRandomObstacleAt(first.getPlatformInterfaces().get(0).getHitBox().right + SPACE_BETWEEN_OBSTACLES);
+        Obstacle newObstacle = returnRandomObstacleAt(gameView.getWidth());
 
         currentObstacles.add(newObstacle);
         return currentObstacles;
@@ -39,10 +39,11 @@ public class ObstacleSpawner {
 
         int rand = getRandomNumber(0, 2);
         Log.d("TAG", "returnRandomObstacleAt: " + rand);
+        Log.d("TAG", "returnRandomObstacleAt hight: " + windowHeight);
         if(rand == 0){
             //Create single platform
-            int p1Up = getRandomNumber(gabSize, windowHeight-200);
-
+            int p1Up = getRandomNumber(gapSize, windowHeight-200);
+            Log.d("TAG", "returnRandomObstacleAt p1Up: " + p1Up);
             Platform platform1 = new Platform(left , p1Up, left + platformWidth, windowHeight);
             return new Obstacle(platform1, windowHeight, gameView);
         }else{
@@ -50,7 +51,7 @@ public class ObstacleSpawner {
             int gabPos = getRandomNumber(150, windowHeight-100);
             Log.d("TAG", "returnRandomObstacleAt gabPos: " + gabPos);
             Platform platform1 = new Platform(left, 0, left+platformWidth, gabPos);
-            Platform platform2 = new Platform(left, gabPos+gabSize, left+platformWidth, windowHeight);
+            Platform platform2 = new Platform(left, gabPos+gapSize, left+platformWidth, windowHeight);
 
             return new Obstacle(platform2, platform1, windowHeight, gameView);
 

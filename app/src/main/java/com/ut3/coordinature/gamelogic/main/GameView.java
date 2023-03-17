@@ -28,7 +28,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     //Entities
     private Player player;
     private ArrayBlockingQueue<Obstacle> obstacles;
-    ObstacleSpawner obstacleSpawner = new ObstacleSpawner(getHeight(), this);
+    private ObstacleSpawner obstacleSpawner;
 
     //Utilities
     private ScoreCalculator scoreCalculator;
@@ -52,9 +52,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         obstacles = new ArrayBlockingQueue<>(10);
 
+
         obstacles.add(obstacleSpawner.returnRandomObstacleAt(300));
         obstacles.add(obstacleSpawner.returnRandomObstacleAt(600));
         obstacles.add(obstacleSpawner.returnRandomObstacleAt(800));
+
+
         Log.d("TAG", "initEntities: " + obstacles.size());
 
 
@@ -66,13 +69,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private void initUtilities(){
         //Init all utilities needed
         scoreCalculator = new ScoreCalculator(sharedPreference);
+        obstacleSpawner = new ObstacleSpawner(getHeight(), this);
     }
 
     @Override
     public void surfaceCreated(@NonNull SurfaceHolder holder) {
+        initUtilities();
         initEntities();
 
-        initUtilities();
+
 
         thread.setRunning(true);
         thread.start();
@@ -101,14 +106,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         scoreCalculator.updateScore(player.getObstaclePassed().size());
         player.updateGameObject();
 
-        /*
+
         for(Obstacle obstacle : obstacles) {
             obstacle.move();
         }
 
-         */
 
-        if(obstacles.peek().getPlatformInterfaces().get(0).getHitBox().right <= 0){
+        if(obstacles.size() < 4){
             obstacles = obstacleSpawner.spawnNewObstacle(obstacles);
         }
 
