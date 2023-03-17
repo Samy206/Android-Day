@@ -2,6 +2,8 @@ package com.ut3.coordinature.gamelogic.main;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.ut3.coordinature.R;
 import com.ut3.coordinature.entities.characters.impl.Player;
 import com.ut3.coordinature.entities.obstacles.impl.Obstacle;
 import com.ut3.coordinature.entities.obstacles.impl.Platform;
@@ -36,6 +39,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         super(context);
         getHolder().addCallback(this);
         sharedPreference = sharedPreferenceScore;
+        this.sharedPreference = sharedPreferenceScore;
         thread = new GameThread(getHolder(), this);
 
         setFocusable(true);
@@ -43,12 +47,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     private void initEntities(){
         //Init all entitites needed
-        obstacles = new ArrayBlockingQueue<>(1);
-        Platform p1 = new Platform(100, 0, 200, 200);
-        Platform p2 = new Platform(100, 400, 200, getHeight());
+        obstacles = new ArrayBlockingQueue<>(10);
+        Platform p1 = new Platform(300, 0, 500, 200);
+        Platform p2 = new Platform(300, 550, 500, this.getHeight());
+        Platform p3 = new Platform(800, 500, 900, getHeight());
+        obstacles.add(new Obstacle(p2, p1, getHeight(), this));
+        obstacles.add(new Obstacle(p3, getHeight(), this));
 
-        obstacles.add(new Obstacle(p1, p2, getHeight()));
-
+        Bitmap playerSheet = BitmapFactory.decodeResource(this.getResources(), R.drawable.bat);
+        int playerHeight =(int) (this.getHeight() * 0.5);
+        player = new Player(this, playerSheet, 0, playerHeight);
     }
 
     private void initUtilities(){
@@ -87,15 +95,27 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void update() {
         scoreCalculator.updateScore(player.getObstaclePassed().size());
+        player.updateGameObject();
+
+        for(Obstacle obstacle : obstacles) {
+            obstacle.move();
+        }
+
+        detectCollisions();
+
     }
 
     @Override
     public synchronized void draw(Canvas canvas) {
         super.draw(canvas);
-        player.drawGameObject(canvas);
 
-        for(Obstacle obstacle : obstacles) {
-            obstacle.drawGameObject(canvas);
+        if(canvas != null){
+            player.drawGameObject(canvas);
+
+            for(Obstacle obstacle : obstacles) {
+                obstacle.drawGameObject(canvas);
+            }
+
         }
     }
 
@@ -107,5 +127,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         for(Obstacle obstacle : obstacles) {
             player.obstaclePassedCheck(obstacle);
         }
+    }
+
+    public void deleteObstacle(Obstacle obstacle) {
+        if(obstacle != null)
+            obstacles.remove(obstacle);
     }
 }

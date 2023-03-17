@@ -2,6 +2,7 @@ package com.ut3.coordinature.entities.characters;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.util.Log;
 
 public abstract class BitmapCharacter {
     protected final Bitmap spriteSheet;
@@ -34,7 +35,7 @@ public abstract class BitmapCharacter {
     }
 
     protected Bitmap createSubImageAt(int row, int col){
-        Bitmap subImage = Bitmap.createBitmap(spriteSheet, col * SPRITE_WIDTH, row * SPRITE_HEIGHT, SPRITE_WIDTH, SPRITE_HEIGHT);
+        Bitmap subImage = Bitmap.createBitmap(spriteSheet, col * SPRITE_WIDTH, row * SPRITE_HEIGHT, SPRITE_WIDTH,  SPRITE_HEIGHT);
         return subImage;
     }
 

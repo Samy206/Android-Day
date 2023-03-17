@@ -4,7 +4,6 @@ package com.ut3.coordinature.activities;
 import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -12,22 +11,13 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.MediaRecorder;
 import android.os.Bundle;
-import android.os.Environment;
-import android.util.Log;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
-import com.ut3.coordinature.R;
 import com.ut3.coordinature.gamelogic.main.GameView;
-//import com.ut3.coordinature.entities.character.impl.Player;
-//import com.ut3.coordinature.game.logic.main.GameView;
 
 import java.io.File;
-import java.io.IOException;
 
 public class GameActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -36,17 +26,16 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     File audioFile = null;
 
-    private MediaRecorder mRecorder = null;
+    private final MediaRecorder mRecorder = null;
 
     private GameView gameView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         initGameView();
 
-        setContentView(createRootPanel());
+        setContentView(gameView);
 
         setupActionBar();
         sm = (SensorManager) getSystemService(SENSOR_SERVICE);
@@ -64,7 +53,6 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     private void initGameView(){
         SharedPreferences sharedPreferences = getSharedPreferences(MainMenuActivity.SHARED_PREF, MODE_PRIVATE);
         gameView = new GameView(this, sharedPreferences);
-        gameView.setZOrderOnTop(true);
         gameView.getHolder().setFormat(PixelFormat.TRANSPARENT);
     }
 
@@ -159,7 +147,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     }
 
-    private RelativeLayout createRootPanel(){
+    /*private RelativeLayout createRootPanel(){
         // Setup your ImageView
         ImageView bgImagePanel = new ImageView(this);
 
@@ -168,11 +156,11 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         RelativeLayout rootPanel = new RelativeLayout(this);
 
         rootPanel.setLayoutParams(fillParentLayout);
-        //rootPanel.addView(gameView, fillParentLayout);
+        rootPanel.addView(gameView, fillParentLayout);
         rootPanel.addView(bgImagePanel, fillParentLayout);
 
         return rootPanel;
-    }
+    }**/
 
     public void returnToMenuActivity() {
         Intent intent = new Intent(this, MainMenuActivity.class);

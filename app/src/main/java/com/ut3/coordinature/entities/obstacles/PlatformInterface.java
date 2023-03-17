@@ -15,4 +15,6 @@ public interface PlatformInterface extends Movable, Collidable, GameObject {
 
     Rect getHitBox();
 
+    int getSPEED();
+
 }

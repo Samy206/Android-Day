@@ -14,7 +14,7 @@ public class ScoreCalculator {
     }
 
     public long calculateScore(int obstaclePassed){
-        return ( obstaclePassed / 3);
+        return ( obstaclePassed / 1);
     }
 
     public void updateScore(int obstaclePassed) {
