@@ -34,7 +34,7 @@ public class Player extends BitmapCharacter implements Collidable, Movable, Game
     private final Matrix movementMatrix;
     private long lastAnimationTime = -1;
 
-    private int PLAYER_SCALE = 3;
+    private final int PLAYER_SCALE = 3;
 
     private final GameView gameView;
 

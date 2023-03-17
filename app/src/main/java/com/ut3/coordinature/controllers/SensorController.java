@@ -19,9 +19,9 @@ public class SensorController implements SensorEventListener{
 
     SensorManager sm = null;
 
-    private GameView gameView;
+    private final GameView gameView;
 
-    private GameActivity activity;
+    private final GameActivity activity;
 
     private final double LIGHT_BLOCKED_LUX = 20;
     private boolean displayAvailable;

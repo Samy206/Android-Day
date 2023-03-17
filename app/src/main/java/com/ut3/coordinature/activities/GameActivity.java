@@ -11,6 +11,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -53,9 +54,14 @@ public class GameActivity extends AppCompatActivity {
     }
 
 
+    public void startMainMenuActivity() {
+        Intent intent = new Intent(this, MainMenuActivity.class);
+        startActivity(intent);
+    }
+
     private void initGameView(){
         SharedPreferences sharedPreferences = getSharedPreferences(MainMenuActivity.SHARED_PREF, MODE_PRIVATE);
-        gameView = new GameView(this, sharedPreferences);
+        gameView = new GameView(this, sharedPreferences, this);
         gameView.getHolder().setFormat(PixelFormat.TRANSPARENT);
 
         this.controller = new MainController(this, this.gameView);

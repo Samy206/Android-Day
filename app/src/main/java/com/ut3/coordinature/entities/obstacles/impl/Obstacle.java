@@ -21,7 +21,7 @@ public class Obstacle implements Movable, Collidable, GameObject {
 
     //
     private Long lastDisplayed;
-    private final Long VISIBILITY_DELAY = 500000000L;
+    private final Long VISIBILITY_DELAY = 1000000000L;
     private final GameView gameView;
 
     public Obstacle(Platform bottomPlatform, Platform topPlatform, int windowHeight, GameView view) {
@@ -73,7 +73,7 @@ public class Obstacle implements Movable, Collidable, GameObject {
     @Override
     public boolean detectCollision(Rect dangerHitBox) {
         if(platforms.size() == 2) {
-            return ( platforms.get(0).detectCollision(dangerHitBox) && platforms.get(1).detectCollision(dangerHitBox));
+            return ( platforms.get(0).detectCollision(dangerHitBox) || platforms.get(1).detectCollision(dangerHitBox));
         }
         else {
             return platforms.get(0).detectCollision(dangerHitBox);

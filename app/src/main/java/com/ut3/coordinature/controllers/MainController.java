@@ -5,8 +5,8 @@ import com.ut3.coordinature.gamelogic.main.GameView;
 
 public class MainController {
 
-    private SensorController sensorController;
-    private TouchController touchController;
+    private final SensorController sensorController;
+    private final TouchController touchController;
 
     public MainController(GameActivity gameActivity, GameView gameView){
         this.sensorController = new SensorController(gameActivity, gameView);

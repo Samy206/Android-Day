@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.ut3.coordinature.R;
+import com.ut3.coordinature.activities.GameActivity;
 import com.ut3.coordinature.entities.characters.impl.Player;
 import com.ut3.coordinature.entities.obstacles.impl.Obstacle;
 import com.ut3.coordinature.entities.obstacles.impl.Platform;
@@ -34,12 +35,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     // Commons
     private final GameThread thread;
     private TextView currentScore;
-    private SharedPreferences sharedPreference;
+    private final SharedPreferences sharedPreference;
+    private final GameActivity gameActivity;
 
-    public GameView(Context context, SharedPreferences sharedPreferenceScore) {
+    public GameView(Context context, SharedPreferences sharedPreferenceScore, GameActivity gameActivity) {
         super(context);
         getHolder().addCallback(this);
         this.sharedPreference = sharedPreferenceScore;
+        this.gameActivity = gameActivity;
         thread = new GameThread(getHolder(), this);
 
         setFocusable(true);
@@ -130,7 +133,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void clearGame(){
-        //TODO : Put all lists.clear
+        obstacles.clear();
     }
 
     public Player getPlayer() {
@@ -141,6 +144,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private void detectCollisions() {
         for(Obstacle obstacle : obstacles) {
             player.obstaclePassedCheck(obstacle);
+            if(obstacle.detectCollision(player.gethitBox())) {
+                thread.setRunning(false);
+                clearGame();
+                gameActivity.startMainMenuActivity();
+            }
         }
     }
 
