@@ -50,7 +50,7 @@ public class Obstacle implements Movable, Collidable, GameObject {
     }
 
     @Override
-    public void update() {
+    public void updateGameObject() {
 
         boolean visibleObstacle = platforms.get(0).getVisibility();
         boolean delayOver = false;
@@ -76,9 +76,9 @@ public class Obstacle implements Movable, Collidable, GameObject {
     }
 
     @Override
-    public void draw (Canvas canvas) {
+    public void drawGameObject(Canvas canvas) {
         for(PlatformInterface platform : platforms) {
-            platform.draw(canvas);
+            platform.drawGameObject(canvas);
         }
     }
 

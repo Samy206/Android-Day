@@ -36,7 +36,7 @@ public class Platform implements PlatformInterface, GameObject {
     }
 
     @Override
-    public void draw (Canvas canvas) {
+    public void drawGameObject(Canvas canvas) {
         Paint paint = new Paint();
         if(visible)
             paint.setColor(Color.RED);
@@ -51,7 +51,7 @@ public class Platform implements PlatformInterface, GameObject {
     }
 
     @Override
-    public void update() {
+    public void updateGameObject() {
         move();
     }
 
