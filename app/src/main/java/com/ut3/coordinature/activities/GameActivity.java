@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.ut3.coordinature.R;
+import com.ut3.coordinature.controllers.MainController;
 import com.ut3.coordinature.gamelogic.main.GameView;
 //import com.ut3.coordinature.entities.character.impl.Player;
 //import com.ut3.coordinature.game.logic.main.GameView;
@@ -29,16 +30,17 @@ import com.ut3.coordinature.gamelogic.main.GameView;
 import java.io.File;
 import java.io.IOException;
 
-public class GameActivity extends AppCompatActivity implements SensorEventListener {
+public class GameActivity extends AppCompatActivity {
 
-    //private GameView gameView;
+    private GameView gameView;
     SensorManager sm = null;
 
     File audioFile = null;
 
     private MediaRecorder mRecorder = null;
 
-    private GameView gameView;
+    private MainController controller;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +50,8 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         setContentView(gameView);
 
         setupActionBar();
-        sm = (SensorManager) getSystemService(SENSOR_SERVICE);
+
+        this.controller = new MainController(this, this.gameView);
     }
 
     private void setupActionBar(){
@@ -72,11 +75,9 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     @Override
     protected void onResume() {
         super.onResume();
+        controller.getSensorController().registerListener();
         /*
-        Sensor sensor = sm.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION
-        );
-        sm.registerListener(this, sensor, SensorManager.
-                SENSOR_DELAY_NORMAL);
+
 
         if (mRecorder == null) {
 
@@ -112,6 +113,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     protected void onStop() {
+        controller.getSensorController().unregisterListener();
         /*
         sm.unregisterListener(this, sm.getDefaultSensor(Sensor.
                 TYPE_LINEAR_ACCELERATION));
@@ -128,23 +130,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     }
 
 
-    @Override
-    public void onSensorChanged(SensorEvent sensorEvent) {
-        /*
-        int sensor = sensorEvent.sensor.getType();
-        float[] values = sensorEvent.values;
-        synchronized (this) {
-            if (sensor == Sensor.TYPE_LINEAR_ACCELERATION) {
-                Player player = gameView.getPlayer();
-                if(values[2] > 5 && player != null){
-                    player.jump();
-                }
-            }
-        }
 
-         */
-
-    }
 
     public double getAmplitude() {
         if (mRecorder != null)
@@ -154,10 +140,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     }
 
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int i) {
 
-    }
 
     /*private RelativeLayout createRootPanel(){
         // Setup your ImageView
@@ -179,4 +162,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
         startActivity(intent);
     }
 
+    public MainController getController() {
+        return controller;
+    }
 }
