@@ -45,14 +45,22 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         setFocusable(true);
     }
 
+
+    public ArrayBlockingQueue<Obstacle> getObstacles() {
+        return obstacles;
+    }
     private void initEntities(){
         //Init all entitites needed
         obstacles = new ArrayBlockingQueue<>(10);
-        Platform p1 = new Platform(300, 0, 500, 200);
-        Platform p2 = new Platform(300, 550, 500, this.getHeight());
-        Platform p3 = new Platform(800, 500, 900, getHeight());
+        Platform p1 = new Platform(400, 0, 430, 200);
+        Platform p2 = new Platform(400, 550, 430, this.getHeight());
+        Platform p3 = new Platform(600, 500, 650, getHeight());
+        Platform p4 = new Platform(900, 500, 950, getHeight());
+        Platform p5 = new Platform(1400, 500, 1450, getHeight());
         obstacles.add(new Obstacle(p2, p1, getHeight(), this));
         obstacles.add(new Obstacle(p3, getHeight(), this));
+        obstacles.add(new Obstacle(p4, getHeight(), this));
+        obstacles.add(new Obstacle(p5, getHeight(), this));
 
         Bitmap playerSheet = BitmapFactory.decodeResource(this.getResources(), R.drawable.bat);
         int playerHeight =(int) (this.getHeight() * 0.5);
@@ -97,8 +105,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         scoreCalculator.updateScore(player.getObstaclePassed().size());
         player.updateGameObject();
 
-        for(Obstacle obstacle : obstacles) {
-            obstacle.move();
+        if(obstacles != null) {
+            for(Obstacle obstacle : obstacles) {
+                obstacle.updateGameObject();
+            }
         }
 
         detectCollisions();
@@ -135,7 +145,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void deleteObstacle(Obstacle obstacle) {
-        if(obstacle != null)
+        if(obstacle != null) {
             obstacles.remove(obstacle);
+        }
+
     }
 }
