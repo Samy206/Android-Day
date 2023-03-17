@@ -55,7 +55,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         obstacles.add(obstacleSpawner.returnRandomObstacleAt(300));
         obstacles.add(obstacleSpawner.returnRandomObstacleAt(600));
-        obstacles.add(obstacleSpawner.returnRandomObstacleAt(800));
+        obstacles.add(obstacleSpawner.returnRandomObstacleAt(900));
+
 
 
         Log.d("TAG", "initEntities: " + obstacles.size());
