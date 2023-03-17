@@ -2,6 +2,7 @@ package com.ut3.coordinature.gamelogic.utilities;
 
 import android.content.SharedPreferences;
 
+import com.ut3.coordinature.activities.MainMenuActivity;
 import com.ut3.coordinature.entities.characters.impl.Player;
 
 public class ScoreCalculator {
