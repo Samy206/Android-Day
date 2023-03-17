@@ -16,7 +16,7 @@ public class Obstacle implements Movable, Collidable, GameObject {
     // An obstacle is an alignment of one or two platforms
     private final List<PlatformInterface> platforms;
     private final Long VISIBILITY_DELAY = 3000000000L;
-    private Long lastDisplayed;
+    private final Long lastDisplayed;
 
     public Obstacle(Platform bottomPlatform, Platform topPlatform) {
         platforms = new ArrayList<>();
