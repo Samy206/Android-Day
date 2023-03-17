@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.TextView;
@@ -38,7 +39,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public GameView(Context context, SharedPreferences sharedPreferenceScore) {
         super(context);
         getHolder().addCallback(this);
-        sharedPreference = sharedPreferenceScore;
         this.sharedPreference = sharedPreferenceScore;
         thread = new GameThread(getHolder(), this);
 
@@ -122,6 +122,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void clearGame(){
         //TODO : Put all lists.clear
     }
+
+    public Player getPlayer() {
+        return this.player;
+    }
+
 
     private void detectCollisions() {
         for(Obstacle obstacle : obstacles) {
