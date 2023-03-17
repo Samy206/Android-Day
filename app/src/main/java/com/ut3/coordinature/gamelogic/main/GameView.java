@@ -18,6 +18,7 @@ import com.ut3.coordinature.entities.characters.impl.Player;
 import com.ut3.coordinature.entities.obstacles.impl.Obstacle;
 import com.ut3.coordinature.entities.obstacles.impl.Platform;
 import com.ut3.coordinature.gamelogic.utilities.ScoreCalculator;
+import com.ut3.coordinature.utils.ObstacleSpawner;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
@@ -27,6 +28,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     //Entities
     private Player player;
     private ArrayBlockingQueue<Obstacle> obstacles;
+    ObstacleSpawner obstacleSpawner = new ObstacleSpawner(getHeight(), this);
 
     //Utilities
     private ScoreCalculator scoreCalculator;
@@ -47,12 +49,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     private void initEntities(){
         //Init all entitites needed
+
         obstacles = new ArrayBlockingQueue<>(10);
-        Platform p1 = new Platform(300, 0, 500, 200);
-        Platform p2 = new Platform(300, 550, 500, this.getHeight());
-        Platform p3 = new Platform(800, 500, 900, getHeight());
-        obstacles.add(new Obstacle(p2, p1, getHeight(), this));
-        obstacles.add(new Obstacle(p3, getHeight(), this));
+
+        obstacles.add(obstacleSpawner.returnRandomObstacleAt(300));
+        obstacles.add(obstacleSpawner.returnRandomObstacleAt(600));
+        obstacles.add(obstacleSpawner.returnRandomObstacleAt(800));
+        Log.d("TAG", "initEntities: " + obstacles.size());
+
 
         Bitmap playerSheet = BitmapFactory.decodeResource(this.getResources(), R.drawable.bat);
         int playerHeight =(int) (this.getHeight() * 0.5);
@@ -97,9 +101,19 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         scoreCalculator.updateScore(player.getObstaclePassed().size());
         player.updateGameObject();
 
+        /*
         for(Obstacle obstacle : obstacles) {
             obstacle.move();
         }
+
+         */
+
+        if(obstacles.peek().getPlatformInterfaces().get(0).getHitBox().right <= 0){
+            obstacles = obstacleSpawner.spawnNewObstacle(obstacles);
+        }
+
+
+
 
         detectCollisions();
 

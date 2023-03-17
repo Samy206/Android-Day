@@ -18,11 +18,15 @@ public class Obstacle implements Movable, Collidable, GameObject {
     private final List<PlatformInterface> platforms;
     // Platform gap to detect if the player has been in it
     private Rect platformsGap;
+    private int windowHeight;
+
 
     //
     private final Long lastDisplayed;
     private final Long VISIBILITY_DELAY = 3000000000L;
     private final GameView gameView;
+
+
 
     public Obstacle(Platform bottomPlatform, Platform topPlatform, int windowHeight, GameView view) {
         platforms = new ArrayList<>();
@@ -30,6 +34,7 @@ public class Obstacle implements Movable, Collidable, GameObject {
         platforms.add(topPlatform);
         gameView = view;
         lastDisplayed = 0L;
+        this.windowHeight = windowHeight;
         setupPlatformGap();
     }
 
@@ -38,6 +43,7 @@ public class Obstacle implements Movable, Collidable, GameObject {
         platforms.add(singlePlatform);
         gameView = view;
         lastDisplayed = 0L;
+        this.windowHeight = windowHeight;
         setupPlatformGap();
     }
 
