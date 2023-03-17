@@ -19,6 +19,8 @@ public class SensorController implements SensorEventListener{
 
     private GameActivity activity;
 
+    private final double LIGHT_BLOCKED_LUX = 10;
+
     public SensorController(GameActivity activity, GameView gameView){
 
         sm = (SensorManager) activity.getSystemService(SENSOR_SERVICE);
@@ -27,9 +29,13 @@ public class SensorController implements SensorEventListener{
     }
 
     public void registerListener(){
-        Sensor sensor = sm.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION
+        Sensor acceloSensor = sm.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION
         );
-        sm.registerListener(this, sensor, SensorManager.
+        Sensor luxSensor = sm.getDefaultSensor(Sensor.TYPE_LIGHT);
+
+        sm.registerListener(this, acceloSensor, SensorManager.
+                SENSOR_DELAY_NORMAL);
+        sm.registerListener(this, luxSensor, SensorManager.
                 SENSOR_DELAY_NORMAL);
     }
 
@@ -37,6 +43,8 @@ public class SensorController implements SensorEventListener{
     public void unregisterListener(){
         sm.unregisterListener(this, sm.getDefaultSensor(Sensor.
                 TYPE_LINEAR_ACCELERATION));
+        sm.unregisterListener(this, sm.getDefaultSensor(Sensor.
+                TYPE_LIGHT));
     }
 
     @Override
@@ -47,6 +55,13 @@ public class SensorController implements SensorEventListener{
         synchronized (this) {
             if (sensor == Sensor.TYPE_LINEAR_ACCELERATION) {
                 //implement obstacles mouvement here
+            }
+
+            if (sensor == Sensor.TYPE_LIGHT) {
+                if(values[0] < LIGHT_BLOCKED_LUX){
+                    // show obstacles here
+                }
+
             }
         }
 
