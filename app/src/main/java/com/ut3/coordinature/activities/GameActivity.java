@@ -45,13 +45,13 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         initGameView();
 
         setContentView(gameView);
 
         setupActionBar();
 
-        this.controller = new MainController(this, this.gameView);
     }
 
     private void setupActionBar(){
@@ -69,6 +69,9 @@ public class GameActivity extends AppCompatActivity {
         gameView = new GameView(this, sharedPreferences);
         //gameView.setZOrderOnTop(true);
         gameView.getHolder().setFormat(PixelFormat.TRANSPARENT);
+
+        this.controller = new MainController(this, this.gameView);
+        gameView.setOnTouchListener(controller.getTouchController());
     }
 
 

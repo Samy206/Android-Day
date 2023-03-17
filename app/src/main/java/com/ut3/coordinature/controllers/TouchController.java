@@ -14,9 +14,10 @@ public class TouchController implements View.OnTouchListener{
     // player movements application
     private final GameView gameView;
 
+    private int direction;
+
     public TouchController(GameView gameView) {
         this.gameView = gameView;
-
     }
 
     /**
@@ -29,18 +30,23 @@ public class TouchController implements View.OnTouchListener{
     public boolean onTouch(View view, MotionEvent motionEvent) {
         float x = motionEvent.getX();
         float y = motionEvent.getY();
-
-
+        Player player = gameView.getPlayer();
         switch (motionEvent.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                //Log.d("TAG", "onTouch: touch down");
+            case MotionEvent.ACTION_MOVE:
+                Log.d("TAG", "onTouch: touch move");
                 //implement player move here
+           case MotionEvent.ACTION_DOWN:
+                Log.d("TAG", "onTouch: touch down");
+                direction = (int) (y - player.getyPos()) > 0 ? 1 : -1;
+                player.setDirection(direction);
+                player.setCanMove(true);
                 break;
             case MotionEvent.ACTION_UP:
-                //Log.d("TAG", "onTouch: touch up");
+                Log.d("TAG", "onTouch: touch up");
                 //implement player move here
+
                 break;
-            case MotionEvent.ACTION_MOVE:
+
             default:
                 return true;
         }

@@ -6,8 +6,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -31,8 +33,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         getHolder().addCallback(this);
         this.sharedPreferences = sharedPreferences;
         thread = new GameThread(getHolder(), this);
-
         setFocusable(true);
+
     }
 
     private void initEntities(){
@@ -89,4 +91,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void clearGame(){
         //TODO : Put all lists.clear
     }
+
+    public Player getPlayer() {
+        return this.player;
+    }
+
 }

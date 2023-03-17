@@ -2,8 +2,11 @@ package com.ut3.coordinature.entities.characters.impl;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.Rect;
+import android.util.Log;
 
 import com.ut3.coordinature.entities.Collidable;
 import com.ut3.coordinature.entities.GameObject;
@@ -12,23 +15,28 @@ import com.ut3.coordinature.entities.characters.BitmapCharacter;
 import com.ut3.coordinature.gamelogic.main.GameView;
 
 public class Player extends BitmapCharacter implements Collidable, Movable, GameObject {
-    private static final float VELOCITY = 0.5f;
-
+    private static final float VELOCITY = 2f;
     private final int ROW_LEFT_TO_RIGHT = 0;
     private final Bitmap[] leftToRight;
 
     private final Rect hitbox;
 
-    private final boolean canMove;
+    private boolean canMove;
     private int colUsing;
 
     private int obstaclePassed;
 
     private long lastDrawnNanoTime = -1;
 
+    private long lastAnimationTime = -1;
+
+    private int PLAYER_SCALE = 3;
+
     private Matrix movementMatrix;
 
     private GameView gameView;
+
+    private int direction = 0;
 
     public Player(GameView gameView, Bitmap spriteSheet, int xPos, int yPos) {
         super(spriteSheet, 1, 2, xPos, yPos);
@@ -39,7 +47,7 @@ public class Player extends BitmapCharacter implements Collidable, Movable, Game
             this.leftToRight[col] = this.createSubImageAt(ROW_LEFT_TO_RIGHT, col);
         }
 
-        this.hitbox = new Rect(xPos, yPos, xPos + this.SPRITE_WIDTH, yPos + this.SPRITE_HEIGHT);
+        this.hitbox = new Rect(xPos, yPos, xPos + PLAYER_SCALE * this.SPRITE_WIDTH, yPos + PLAYER_SCALE *this.SPRITE_HEIGHT);
 
         this.canMove = false;
         this.colUsing = 0;
@@ -53,36 +61,65 @@ public class Player extends BitmapCharacter implements Collidable, Movable, Game
         Bitmap[] bitmaps = this.leftToRight;
         return bitmaps[this.colUsing];
     }
-
     private void movementMatrixUpdate(){
         movementMatrix.reset();
-        movementMatrix.postScale(3.0f, 3.0f);
+        movementMatrix.postScale(PLAYER_SCALE, PLAYER_SCALE);
         movementMatrix.postTranslate(xPos, yPos);
+
     }
 
-    @Override
-    public void updateGameObject(){
-        //this.colUsing = (this.colUsing + 1) % this.colCount;
-
-        //Get current time
-        long now = System.nanoTime();
+    private void setTimers(long now){
         //If never drawn
         if(lastDrawnNanoTime == -1){
             lastDrawnNanoTime = now;
         }
-
-        int deltaTime = (int) ((now - lastDrawnNanoTime) / 1000000);
-
-        //Distance moves
-        float distance = VELOCITY * deltaTime;
+        if(lastAnimationTime == -1){
+            lastAnimationTime = now;
+        }
     }
+
+    @Override
+    public void updateGameObject(){
+
+        //Get current time
+        long now = System.nanoTime();
+
+        setTimers(now);
+
+        int deltaTimeAnimation = (int) ((now - lastAnimationTime) / 1000000);
+        if(deltaTimeAnimation > 200){
+            this.colUsing = (this.colUsing + 1) % this.colCount;
+            lastAnimationTime = now;
+        }
+        if(canMove){
+            int deltaTime = (int) ((now - lastDrawnNanoTime) / 1000000);
+            //Distance moves
+            float distance = VELOCITY * deltaTime;
+            int offsetY = (int)(direction * distance);
+
+            this.yPos += offsetY;
+            int reposition = yPos - this.hitbox.top;
+
+            if(yPos <= 0 ){
+                yPos = 0;
+                this.hitbox.offset(0, reposition );
+            }else if(yPos >= this.gameView.getHeight()- SPRITE_HEIGHT * (PLAYER_SCALE)){
+                yPos = this.gameView.getHeight() - SPRITE_HEIGHT * PLAYER_SCALE;
+                this.hitbox.offset(0, reposition);
+            }else{
+                this.hitbox.offset(0, offsetY);
+            }
+
+            setCanMove(false);
+        }
+
+    }
+
     @Override
     public void drawGameObject(Canvas canvas){
         Bitmap bitmap = this.getCurrentMoveBitmap();
         movementMatrixUpdate();
         canvas.drawBitmap(bitmap, movementMatrix, null);
-
-        //canvas.drawBitmap(bitmap, xPos, yPos, null);
 
         //Update timer
         this.lastDrawnNanoTime = System.nanoTime();
@@ -107,5 +144,13 @@ public class Player extends BitmapCharacter implements Collidable, Movable, Game
 
     public void setObstaclePassed(int obstaclePassed) {
         this.obstaclePassed = obstaclePassed;
+    }
+
+    public void setDirection(int direction) {
+        this.direction = direction;
+    }
+
+    public void setCanMove(boolean b) {
+        this.canMove = b;
     }
 }
