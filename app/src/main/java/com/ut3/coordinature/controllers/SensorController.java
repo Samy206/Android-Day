@@ -6,7 +6,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.util.Log;
 
 import com.ut3.coordinature.activities.GameActivity;
 import com.ut3.coordinature.entities.characters.impl.Player;
