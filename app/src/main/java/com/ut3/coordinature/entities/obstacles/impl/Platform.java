@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.util.Log;
 
 import com.ut3.coordinature.entities.GameObject;
 import com.ut3.coordinature.entities.obstacles.PlatformInterface;
@@ -12,7 +13,7 @@ public class Platform implements PlatformInterface, GameObject {
 
     private final Rect hitBox;
     private boolean visible;
-    public final int SPEED = 1;
+    public final int SPEED = 4;
     public int direction = 0;
 
 

@@ -1,4 +1,4 @@
-package com.ut3.coordinature.utils;
+package com.ut3.coordinature.gamelogic.utilities;
 
 import android.util.Log;
 
@@ -10,10 +10,10 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 public class ObstacleSpawner {
 
-    private int windowHeight;
+    private final int windowHeight;
 
     private final int platformWidth = 100;
-    private int gapSize = 200;
+    private final int gapSize = 200;
     private final GameView gameView;
 
     private final int SPACE_BETWEEN_OBSTACLES = 50;
@@ -38,18 +38,14 @@ public class ObstacleSpawner {
     public Obstacle returnRandomObstacleAt(int left){
 
         int rand = getRandomNumber(0, 2);
-        Log.d("TAG", "returnRandomObstacleAt: " + rand);
-        Log.d("TAG", "returnRandomObstacleAt hight: " + windowHeight);
         if(rand == 0){
             //Create single platform
             int p1Up = getRandomNumber(gapSize, windowHeight-200);
-            Log.d("TAG", "returnRandomObstacleAt p1Up: " + p1Up);
             Platform platform1 = new Platform(left , p1Up, left + platformWidth, windowHeight);
             return new Obstacle(platform1, windowHeight, gameView);
         }else{
             //Create 2 platforms
             int gabPos = getRandomNumber(150, windowHeight-100);
-            Log.d("TAG", "returnRandomObstacleAt gabPos: " + gabPos);
             Platform platform1 = new Platform(left, 0, left+platformWidth, gabPos);
             Platform platform2 = new Platform(left, gabPos+gapSize, left+platformWidth, windowHeight);
 

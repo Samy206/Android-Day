@@ -2,6 +2,7 @@ package com.ut3.coordinature.entities.obstacles.impl;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.util.Log;
 
 import com.ut3.coordinature.entities.Collidable;
 import com.ut3.coordinature.entities.GameObject;
@@ -18,14 +19,11 @@ public class Obstacle implements Movable, Collidable, GameObject {
     private final List<PlatformInterface> platforms;
     // Platform gap to detect if the player has been in it
     private Rect platformsGap;
-    private int windowHeight;
+    private final int windowHeight;
 
-
-    //
     private Long lastDisplayed;
-    private final Long VISIBILITY_DELAY = 1000000000L;
+    private final Long VISIBILITY_DELAY = 500000000L;
     private final GameView gameView;
-
 
     private boolean canMove = false;
     private int direction = 0;

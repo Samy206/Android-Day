@@ -32,11 +32,11 @@ public class MainMenuActivity extends AppCompatActivity {
 
     private ListView listControl;
 
-    String[] controlList = {"Passez au travers du maximum d'obstacle invisible !",
-            "Cachez le capteur de luminosité les rends visibles pour un laps de temps",
-            "Mais attention vous devez passez au moins trois obstacles pour voir les prochains !",
-            "Controlez la monté et descente de votre avatar à l'aide du toucher",
-            "Controlez aussi le mouvement horizontal en penchant la tablette dans le bon sens",
+    String[] controlList = {"Passez au travers du maximum d'obstacles invisibles !",
+            "Cachez le capteur de luminosité les rends visibles durant un laps de temps",
+            "Mais attention vous devez passez au moins deux obstacles pour voir les prochains !",
+            "Contrôlez la monté et descente de votre avatar à l'aide du toucher",
+            "Contrôlez aussi le mouvement horizontal en penchant la tablette dans le bon sens",
             "Bonne chance à vous :)"};
 
 
@@ -72,7 +72,7 @@ public class MainMenuActivity extends AppCompatActivity {
         scoreView.setText("Meilleur score : " + scoreMax);
 
 
-        listControl = (ListView) findViewById(R.id.listControl);
+        listControl = findViewById(R.id.listControl);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.listcontrolview, R.id.ligneControl, controlList);
         listControl.setAdapter(arrayAdapter);
 

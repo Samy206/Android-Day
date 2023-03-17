@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.TextView;
@@ -18,9 +17,8 @@ import com.ut3.coordinature.R;
 import com.ut3.coordinature.activities.GameActivity;
 import com.ut3.coordinature.entities.characters.impl.Player;
 import com.ut3.coordinature.entities.obstacles.impl.Obstacle;
-import com.ut3.coordinature.entities.obstacles.impl.Platform;
 import com.ut3.coordinature.gamelogic.utilities.ScoreCalculator;
-import com.ut3.coordinature.utils.ObstacleSpawner;
+import com.ut3.coordinature.gamelogic.utilities.ObstacleSpawner;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
@@ -60,7 +58,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         obstacles = new ArrayBlockingQueue<>(10);
 
 
-
         obstacles.add(obstacleSpawner.returnRandomObstacleAt(300));
         obstacles.add(obstacleSpawner.returnRandomObstacleAt(600));
         obstacles.add(obstacleSpawner.returnRandomObstacleAt(900));
@@ -89,8 +86,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void surfaceCreated(@NonNull SurfaceHolder holder) {
         initUtilities();
         initEntities();
-
-
 
         thread.setRunning(true);
         thread.start();
@@ -121,7 +116,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
       
         if(obstacles != null) {
             for(Obstacle obstacle : obstacles) {
-                obstacle.updateGameObject();
+                obstacle.move();
             }
         }
 
@@ -129,9 +124,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         if(obstacles.size() < 4){
             obstacles = obstacleSpawner.spawnNewObstacle(obstacles);
         }
-
-
-
 
         
 

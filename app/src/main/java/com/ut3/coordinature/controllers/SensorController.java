@@ -6,6 +6,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.util.Log;
 
 import com.ut3.coordinature.activities.GameActivity;
 import com.ut3.coordinature.entities.characters.impl.Player;
@@ -49,7 +50,7 @@ public class SensorController implements SensorEventListener{
 
     public void unregisterListener(){
         sm.unregisterListener(this, sm.getDefaultSensor(Sensor.
-                TYPE_LINEAR_ACCELERATION));
+                TYPE_MAGNETIC_FIELD));
         sm.unregisterListener(this, sm.getDefaultSensor(Sensor.
                 TYPE_LIGHT));
     }
@@ -62,10 +63,10 @@ public class SensorController implements SensorEventListener{
         ArrayBlockingQueue<Obstacle> obstacleList = gameView.getObstacles();
         synchronized (this) {
             if (sensor == Sensor.TYPE_MAGNETIC_FIELD) {
-                double sensitivity = 0.1;
+                double sensitivity = 0.02;
                     if (values[1] > sensitivity) {
                         this.gameView.setCanMoveObstacles(true, 1);
-                    } else if (values[0] < -sensitivity) {
+                    } else if (values[1] < -sensitivity) {
                         this.gameView.setCanMoveObstacles(true, -1);
                     }
             }
@@ -82,7 +83,7 @@ public class SensorController implements SensorEventListener{
                     nbObstaclesPassed = 0;
                 }
 
-                if(nbObstaclesPassed >= (nbObstaclesAtLastDisplay + 1)) {
+                if(nbObstaclesPassed >= (nbObstaclesAtLastDisplay + 2)) {
                     displayAvailable = true;
                 }
 
